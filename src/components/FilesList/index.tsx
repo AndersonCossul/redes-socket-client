@@ -7,14 +7,17 @@ import {
   TableCell,
   TableBody,
   Button,
+  CircularProgress,
 } from '@mui/material';
 import FileModel from '../../models/FileModel';
 
 type Props = {
   rows: Array<FileModel>;
+  downloadFileId: number | undefined;
+  onDownloadFile: (id: number) => void;
 };
 
-const FilesList = ({ rows }: Props) => (
+const FilesList = ({ rows, downloadFileId, onDownloadFile }: Props) => (
   <TableContainer component={Paper}>
     <Table aria-label="files table">
       <TableHead>
@@ -33,8 +36,17 @@ const FilesList = ({ rows }: Props) => (
             <TableCell align="center">{row.id}</TableCell>
             <TableCell align="center">{row.name}</TableCell>
             <TableCell align="center">
-              <Button variant="outlined" color="primary">
-                Download
+              <Button
+                onClick={() => onDownloadFile(row.id)}
+                variant="outlined"
+                color="primary"
+                disabled={row.id === downloadFileId}
+              >
+                {row.id === downloadFileId ? (
+                  <CircularProgress size={16} />
+                ) : (
+                  'Download'
+                )}
               </Button>
             </TableCell>
           </TableRow>
